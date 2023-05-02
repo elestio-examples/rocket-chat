@@ -16,6 +16,10 @@ environments:
     value: "[CI_CD_DOMAIN]"
   - key: "From_Email"
     value: "[DOMAIN]@vm.elestio.app"
+  - key: "MONGODB_ENABLE_JOURNAL"
+    value: "true"
+  - key: "ALLOW_EMPTY_PASSWORD"
+    value: "yes"
 
 config:
   runTime: "dockerCompose"
