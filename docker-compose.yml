@@ -1,0 +1,51 @@
+services:
+  rocketchat:
+    image: registry.rocket.chat/rocketchat/rocket.chat:latest
+    restart: always
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.rocketchat.rule: Host(`${DOMAIN}`)
+      traefik.http.routers.rocketchat.tls: "true"
+      traefik.http.routers.rocketchat.entrypoints: https
+      traefik.http.routers.rocketchat.tls.certresolver: le
+    environment:
+      MONGO_URL: "mongodb://mongodb:27017/rocketchat?replicaSet=rs0"
+      MONGO_OPLOG_URL: "mongodb://mongodb:27017/local?replicaSet=rs0"
+      ROOT_URL: https://${DOMAIN}
+      PORT: 3000
+      DEPLOY_METHOD: docker
+      DEPLOY_PLATFORM: ${DEPLOY_PLATFORM}
+      ADMIN_USERNAME: root
+      ADMIN_PASS: ${ADMIN_PASSWORD}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      SMTP_Host: 172.17.0.1
+      SMTP_Port: 25
+      From_Email: ${From_Email}
+      ROCKETCHAT_URL: https://${DOMAIN}
+      ROCKETCHAT_ROOM: GENERAL
+      ROCKETCHAT_USER: root
+      ROCKETCHAT_PASSWORD: ${ADMIN_PASSWORD}
+      BOT_NAME: bot
+      # you can add more scripts as you would like here, they need to be installable by npm
+      EXTERNAL_SCRIPTS: hubot-help,hubot-seen,hubot-links,hubot-diagnostics
+    depends_on:
+      - mongodb
+    expose:
+      - 3000
+    ports:
+      - "172.17.0.1:3957:3000"
+
+  mongodb:
+    image: docker.io/bitnami/mongodb:5
+    restart: always
+    volumes:
+      - ./mongodb_data:/bitnami/mongodb
+    environment:
+      MONGODB_REPLICA_SET_MODE: primary
+      MONGODB_REPLICA_SET_NAME: rs0
+      MONGODB_PORT_NUMBER: 27017
+      MONGODB_INITIAL_PRIMARY_HOST: mongodb
+      MONGODB_INITIAL_PRIMARY_PORT_NUMBER: 27017
+      MONGODB_ADVERTISED_HOSTNAME: mongodb
+      MONGODB_ENABLE_JOURNAL: true
+      ALLOW_EMPTY_PASSWORD: yes
