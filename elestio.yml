@@ -73,5 +73,5 @@ lifeCycleConfig:
 webUI:
   - url: "https://[CI_CD_DOMAIN]"
     label: "Rocket.chat Admin"
-    login: "[ADMIN_EMAIL]"
+    login: "root"
     password: "[ADMIN_PASSWORD]"

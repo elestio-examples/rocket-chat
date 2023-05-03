@@ -10,8 +10,8 @@ Deploy Rocket.chat server with CI/CD on Elestio
 
 # Once deployed ...
 
-You can can open Rocket.chat UI here:
+You can open Rocket.chat UI here:
 
     URL: https://[CI_CD_DOMAIN]
-    login: [ADMIN_EMAIL]
+    login: root
     password: [ADMIN_PASSWORD]
