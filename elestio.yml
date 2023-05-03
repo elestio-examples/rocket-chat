@@ -26,6 +26,8 @@ environments:
     value: "root"
   - key: "ADMIN_PASS"
     value: "random_password"
+  - key: "ADMIN_PASSWORD"
+    value: "random_password"
   - key: "ADMIN_EMAIL"
     value: "[EMAIL]"
   - key: "MONGO_URL"
