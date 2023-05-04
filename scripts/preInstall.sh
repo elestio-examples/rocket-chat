@@ -1,8 +1,8 @@
 #set env vars
 #set -o allexport; source .env; set +o allexport;
 
-sleep 10s;
 echo "Waiting for software to be ready ..."
+sleep 10s;
 
 sed -i 's~ROCKETCHAT_COMMAND~> \
       bash -c \
