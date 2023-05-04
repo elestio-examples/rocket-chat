@@ -1,6 +1,9 @@
 #set env vars
 #set -o allexport; source .env; set +o allexport;
 
+sleep 10s;
+echo "Waiting for software to be ready ..."
+
 sed -i 's~ROCKETCHAT_COMMAND~> \
       bash -c \
         "for i in \`seq 1 30\`; do \
