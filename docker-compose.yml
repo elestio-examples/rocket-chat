@@ -13,7 +13,7 @@ services:
     volumes:
       - ./uploads:/app/uploads
     env_file:
-      - .env
+      - ./.env
     depends_on:
       - mongo
     ports:
@@ -54,7 +54,7 @@ services:
     image: rocketchat/hubot-rocketchat:latest
     restart: always
     env_file:
-      - .env
+      - ./.env
     depends_on:
       - rocketchat
     labels:
