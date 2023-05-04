@@ -3,7 +3,7 @@ services:
   rocketchat:
     image: rocketchat/rocket.chat:${SOFTWARE_VERSION_TAG}
     command: >
-      bash -c 
+      bash -c \
         "for (( i=1; i<30; i++)); do \
           node main.js && \
           s=$$? && break || s=$$?; \
