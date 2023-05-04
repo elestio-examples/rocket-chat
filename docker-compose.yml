@@ -4,7 +4,7 @@ services:
     image: rocketchat/rocket.chat:${SOFTWARE_VERSION_TAG}
     command: >
       bash -c 
-        "for (( i=0; i<30; i++)) do \
+        "for (( i=1; i<30; i++)); do \
           node main.js && \
           s=$$? && break || s=$$?; \
           sleep 5; \
@@ -38,7 +38,7 @@ services:
     image: mongo:5
     command: >
       bash -c \
-        "for (( i=0; i<30; i++)) do \
+        "for (( i=1; i<30; i++)); do \
           mongo mongo/rocketchat --eval \" \
             rs.initiate({ \
               _id: 'rs0', \
