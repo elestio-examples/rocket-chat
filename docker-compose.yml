@@ -2,7 +2,7 @@ version: "3"
 services:
   rocketchat:
     image: rocketchat/rocket.chat:${SOFTWARE_VERSION_TAG}
-    command: bash init.sh
+    command: bash /scripts/init.sh
       
     restart: always
     volumes:
@@ -32,19 +32,11 @@ services:
   # it will run the command and remove himself (it will not stay running)
   mongo-init-replica:
     image: mongo:5
-    command: >
-      bash -c
-        "for i in \`seq 1 30\`; do
-          mongo mongo/rocketchat --eval \"
-            rs.initiate({
-              _id: 'rs0',
-              members: [ { _id: 0, host: 'localhost:27017' } ]})\" &&
-          s=$$? && break || s=$$?;
-          echo \"Tried $$i times. Waiting 5 secs...\";
-          sleep 5;
-        done; (exit $$s)"
+    command: bash /scripts/init2.sh
     depends_on:
       - mongo
+    volumes:
+      - ./scripts/init2.sh:/scripts/init2.sh
 
   # hubot, the popular chatbot (add the bot user first and change the password before starting this image)
   hubot:
