@@ -1,7 +1,7 @@
 version: "3"
 services:
   rocketchat:
-    image: elestio4test/rocket.chat:${SOFTWARE_VERSION_TAG}
+    image: elestio4test/rocket-chat:${SOFTWARE_VERSION_TAG}
     command: bash /scripts/init.sh
 
     restart: always
