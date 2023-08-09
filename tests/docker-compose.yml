@@ -3,11 +3,11 @@ services:
   rocketchat:
     image: elestio4test/rocket.chat:${SOFTWARE_VERSION_TAG}
     command: bash /scripts/init.sh
-      
+
     restart: always
     volumes:
       - ./uploads:/app/uploads
-      - ./scripts/init.sh:/scripts/init.sh
+      - ./init.sh:/scripts/init.sh
     env_file:
       - .env
     depends_on:
@@ -22,8 +22,8 @@ services:
     image: mongo:5
     restart: always
     volumes:
-     - ./data/db:/data/db
-     #- ./data/dump:/dump
+      - ./data/db:/data/db
+      #- ./data/dump:/dump
     command: mongod --oplogSize 128 --replSet rs0
     labels:
       - "traefik.enable=false"
@@ -36,7 +36,7 @@ services:
     depends_on:
       - mongo
     volumes:
-      - ./scripts/init2.sh:/scripts/init2.sh
+      - ./init2.sh:/scripts/init2.sh
 
   # hubot, the popular chatbot (add the bot user first and change the password before starting this image)
   hubot:
@@ -50,6 +50,6 @@ services:
       - "traefik.enable=false"
     volumes:
       - ./scripts:/home/hubot/scripts
-  # this is used to expose the hubot port for notifications on the host on port 3001, e.g. for hubot-jenkins-notifier
+    # this is used to expose the hubot port for notifications on the host on port 3001, e.g. for hubot-jenkins-notifier
     ports:
       - "172.17.0.1:8340:8080"
