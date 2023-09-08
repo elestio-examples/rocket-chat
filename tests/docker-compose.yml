@@ -1,55 +1,29 @@
 version: "3"
 services:
   rocketchat:
-    image: elestio4test/rocket-chat:${SOFTWARE_VERSION_TAG}
-    command: bash /scripts/init.sh
-
-    restart: always
-    volumes:
-      - ./uploads:/app/uploads
-      - ./init.sh:/scripts/init.sh
-    env_file:
-      - .env
+    image: elestio4test/rocket-chat:latest
+    restart: on-failure
+    environment:
+      MONGO_URL: ${MONGO_URL}
+      MONGO_OPLOG_URL: ${MONGO_OPLOG_URL}
+      ROOT_URL: ${ROOT_URL}
+      PORT: ${PORT}
     depends_on:
-      - mongo
+      - mongodb
     ports:
-      - "172.17.0.1:3957:3000"
-    labels:
-      - "traefik.backend=rocketchat"
-      - "traefik.frontend.rule=Host: your.domain.tld"
+      - "172.17.0.1:4000:3000"
 
-  mongo:
-    image: mongo:5
-    restart: always
-    volumes:
-      - ./data/db:/data/db
-      #- ./data/dump:/dump
-    command: mongod --oplogSize 128 --replSet rs0
-    labels:
-      - "traefik.enable=false"
-
-  # the job of this container is to just run the command to initialize the replica set.
-  # it will run the command and remove himself (it will not stay running)
-  mongo-init-replica:
-    image: mongo:5
-    command: bash /scripts/init2.sh
-    depends_on:
-      - mongo
-    volumes:
-      - ./init2.sh:/scripts/init2.sh
-
-  # hubot, the popular chatbot (add the bot user first and change the password before starting this image)
-  hubot:
-    image: rocketchat/hubot-rocketchat:latest
-    restart: always
-    env_file:
-      - .env
-    depends_on:
-      - rocketchat
-    labels:
-      - "traefik.enable=false"
-    volumes:
-      - ./scripts:/home/hubot/scripts
-    # this is used to expose the hubot port for notifications on the host on port 3001, e.g. for hubot-jenkins-notifier
+  mongodb:
+    image: docker.io/bitnami/mongodb:5.0
+    restart: on-failure
     ports:
-      - "172.17.0.1:8340:8080"
+      - "27017:27017"
+    environment:
+      MONGODB_REPLICA_SET_MODE: primary
+      MONGODB_REPLICA_SET_NAME: ${MONGODB_REPLICA_SET_NAME}
+      MONGODB_PORT_NUMBER: ${MONGODB_PORT_NUMBER}
+      MONGODB_INITIAL_PRIMARY_HOST: ${MONGODB_INITIAL_PRIMARY_HOST}
+      MONGODB_INITIAL_PRIMARY_PORT_NUMBER: ${MONGODB_INITIAL_PRIMARY_PORT_NUMBER}
+      MONGODB_ADVERTISED_HOSTNAME: ${MONGODB_ADVERTISED_HOSTNAME}
+      MONGODB_ENABLE_JOURNAL: ${MONGODB_ENABLE_JOURNAL}
+      ALLOW_EMPTY_PASSWORD: ${ALLOW_EMPTY_PASSWORD}
