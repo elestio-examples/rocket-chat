@@ -17,7 +17,7 @@ ports:
     isAuth: false
 environments:
   - key: "SOFTWARE_VERSION_TAG"
-    value: "sha-856c235"
+    value: "latest"
   - key: "PORT"
     value: "3000"
   - key: "ROOT_URL"
