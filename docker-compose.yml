@@ -2,7 +2,7 @@ version: "3"
 services:
   rocketchat:
     image: rocketchat/rocket.chat:${SOFTWARE_VERSION_TAG}
-    command: bash /scripts/init.sh
+    command: sh /scripts/init.sh
       
     restart: always
     volumes:
