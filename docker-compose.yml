@@ -19,7 +19,7 @@ services:
       - "traefik.frontend.rule=Host: your.domain.tld"
 
   mongo:
-    image: mongo:5
+    image: mongo:6
     restart: always
     volumes:
      - ./data/db:/data/db
@@ -31,7 +31,7 @@ services:
   # the job of this container is to just run the command to initialize the replica set.
   # it will run the command and remove himself (it will not stay running)
   mongo-init-replica:
-    image: mongo:5
+    image: mongo:6
     command: bash /scripts/init2.sh
     depends_on:
       - mongo
